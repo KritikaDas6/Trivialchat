@@ -4,12 +4,19 @@ import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
 
 const CHATBOT_USER_OBJ = {
   _id: 2,
-  name: "React Native Chatbot",
+  name: "MEOWT",
   avatar: "https://loremflickr.com/140/140",
 };
 
+const TRIVIA_DATA = [
+  { question: "What event is today?", ans: "ping pong" },
+  { question: "Who is the best ping pong player?", ans: "ma long" }
+];
+
 export default function App() {
-  const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState([]);
+    
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(-1);
 
 
   useEffect(() => {
@@ -39,21 +46,42 @@ export default function App() {
       },
     ]);
   };
+    
+
+    
+    const followUpQuestions = (userMessages) => {
+        addBotMessage(TRIVIA_DATA[0].question);
+        const userAnswer= userMesssages[0].text.toLowerCase().trim();
+        if(userAnswer=== TRIVIA_DATA[0].answer){
+            addBotMessage("Correct");
+            return;
+        } else{
+            addBotMessage("no");
+        }
+       
+    }
 
   const respondToUser = (userMessages) => {
     console.log("Recent user msg:", userMessages[0].text);
-
-    addBotMessage("I am da response!");
+      if(userMessages[0].text=="Yes"){
+          addBotMessage("I am da response!");
+          followUpQuestions();
+         return;
+      }
+      addBotMessage("Say Yes to start!");
   };
+    
 
   const onSend = useCallback((messages = []) => {
     addNewMessage(messages);
   }, []);
 
+    
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{flex: 1}}>
         <GiftedChat
+          
           messages={messages}
           onSend={(messages) => {
             onSend(messages);
