@@ -43,7 +43,7 @@ export default function App() {
   const respondToUser = (userMessages) => {
     console.log("Recent user msg:", userMessages[0].text);
 
-    // addBotMessage("I am da response!");
+    addBotMessage("I am da response!");
   };
 
   const onSend = useCallback((messages = []) => {
